@@ -1,6 +1,7 @@
 package br.dev.murilo.airports.controllers;
 
 import br.dev.murilo.airports.DTO.AirportMinDTO;
+import br.dev.murilo.airports.DTO.AirportNearMeDTO;
 import br.dev.murilo.airports.entities.Airport;
 import br.dev.murilo.airports.service.AirportService;
 import java.util.List;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -74,4 +76,25 @@ public class AirportController
             return ResponseEntity.ok(result);            
         }
     }
+    
+    @GetMapping("/nearme")
+    public ResponseEntity<List<AirportNearMeDTO>> findNearMe(
+        @RequestParam double latitude,
+        @RequestParam double longitude )
+    {
+        List<AirportNearMeDTO> result = airportService.findNearMe(latitude, longitude);
+        
+        if(result.isEmpty())
+        {
+            // Lista vazia, retorno 404
+            return ResponseEntity.notFound().build();
+        }
+        else
+        {
+            // Há dados, retorna código 200
+            return ResponseEntity.ok(result);
+        }
+    }
+            
+    
 }
