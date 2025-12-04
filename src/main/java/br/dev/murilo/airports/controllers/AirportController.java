@@ -1,5 +1,6 @@
 package br.dev.murilo.airports.controllers;
 
+import br.dev.murilo.airports.DTO.AirportMinDTO;
 import br.dev.murilo.airports.entities.Airport;
 import br.dev.murilo.airports.service.AirportService;
 import java.util.List;
@@ -38,5 +39,22 @@ public class AirportController
             return ResponseEntity.ok(result);
         }
         //return result;
+    }
+    
+    @GetMapping("/country/{countryName}")
+    public ResponseEntity<List<AirportMinDTO>> findByCountryIgnoreCase(@PathVariable String countryName)
+    {
+        List<AirportMinDTO> result = airportService.findByCountry(countryName);
+        
+        if(result.isEmpty())
+        {
+            // Lista vazia, retorna o erro 404
+            return ResponseEntity.notFound().build();
+        }
+        else
+        {
+            // A lista contém dados, portanto, o retorno será o código 200
+            return ResponseEntity.ok(result);
+        }
     }
 }

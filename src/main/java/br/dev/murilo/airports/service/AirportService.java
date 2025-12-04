@@ -1,5 +1,6 @@
 package br.dev.murilo.airports.service;
 
+import br.dev.murilo.airports.DTO.AirportMinDTO;
 import br.dev.murilo.airports.entities.Airport;
 import br.dev.murilo.airports.repositories.AirportRepository;
 import java.util.List;
@@ -21,6 +22,18 @@ public class AirportService
     public List<Airport> findByCity(String city)
     {
         List<Airport> result = airportRepository.findByCityIgnoreCase(city);
-        return result;
+        return result; 
+    }
+    
+    public List<AirportMinDTO> findByCountry(String country)
+    {
+        List<Airport> resultAirport = airportRepository.findByCountryIgnoreCase(country);
+        
+        List<AirportMinDTO> resultDTO = resultAirport.stream()
+                .map(x -> new AirportMinDTO(x)).toList();
+        
+        return resultDTO;
     }
 }
+
+
